@@ -10,11 +10,11 @@ fn main() {
     let mut index = 0;
     let inp = io::stdin();
     for curline in inp.lock().lines() {
-        if index == count { break; }
         let next_palindrome = get_next_palindrome( &curline.unwrap());
         println!("{}", next_palindrome);
         index += 1;
-    }
+        if index == count { break; }
+   }
 }
 
 fn get_next_palindrome(line: &str) -> String {
