@@ -18,7 +18,7 @@ fn main() {
 }
 
 fn get_next_palindrome(line: &str) -> String {
-    let mut ret: String;
+    let ret: String;
     let length = line.len();
     if length < 2 || line == "10" { ret = "11".to_string(); }
     else {
@@ -33,15 +33,12 @@ fn get_next_palindrome(line: &str) -> String {
                     let (_, trueright) = center_right.split_at(1);
                     trueright
                 };
-        let right_len = right.len();
-        let next_right = inc_string(right);
-        let next_right_len = next_right.len();
         let center = if center_len == 0 { "" }
                 else { 
                     let (ret, _) = center_right.split_at(1);
                     ret
                 };
-        if next_right_len == right_len && next_right <= rleft { 
+        if right < rleft.as_str() { 
             ret = left.to_string() + center + rleft.as_str(); 
         } else { 
             let next_left_center = inc_string( (left.to_string() + center).as_str());
