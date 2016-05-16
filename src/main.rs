@@ -1,4 +1,5 @@
 use std::io;
+use std::io::{ BufWriter};
 use std::io::prelude::*;
 use std::char;
 
@@ -9,22 +10,26 @@ fn main() {
     let count = u32::from_str_radix(&line.as_str(), 10).expect("failed to convert");
     let mut index = 0;
     let inp = io::stdin();
+    let mut out = BufWriter::new(io::stdout());
     for curline in inp.lock().lines() {
         let next_palindrome = get_next_palindrome( &curline.unwrap());
-        println!("{}", next_palindrome);
+        out.write_all( next_palindrome.as_str().as_bytes()).unwrap();
+        out.write_all( "\n".as_bytes()).unwrap();
+        if index % 50 == 0 { out.flush().unwrap(); }
         index += 1;
         if index == count { break; }
-   }
+    }
+    out.flush().unwrap();
 }
 
 fn get_next_palindrome(line: &str) -> String {
     let ret: String;
     let length = line.len();
-    if length < 2 || line == "10" { ret = "11".to_string(); }
+    if length < 2 || (length == 2 && line == "10") { ret = "11".to_string(); }
     else {
-        let half:usize = length / 2; 
+        let half:usize = length >> 1; 
         
-        let center_len = length % 2;
+        let center_len = length - half * 2;
         let (left, center_right) = line.split_at(half);
         let left_len = left.len();
         let rleft = reverse(left);
